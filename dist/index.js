@@ -25,6 +25,7 @@ async function run() {
       .paginate("GET /repos/:owner/:repo/actions/workflows", {
         owner: repo_owner,
         repo: repo_name,
+        per_page: 200
       });
 
     if (delete_workflow_pattern && delete_workflow_pattern.toLowerCase() !== "all") {
@@ -72,8 +73,6 @@ async function run() {
           console.log(`👻 Skipped '${workflow.name}' workflow run ${run.id}: it is in '${run.status}' state`);
           continue;
         }
-
-        console.log(run.pull_requests)
 
         if (check_branch_existence && branchNames.indexOf(run.head_branch) === 1 ) {
           console.log(` Skipping '${workflow.name}' workflow run ${run.id} because branch is still active.`);
