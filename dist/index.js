@@ -48,7 +48,9 @@ async function run() {
       .paginate("GET /repos/:owner/:repo/branches", {
         owner: repo_owner,
         repo: repo_name,
-      }).map(a => a.name);;
+      })
+
+    let branchNames = branches.map(a => a.name);
 
     console.log(`💬 found total of ${workflows.length} workflow(s)`);
     for (const workflow of workflows) {
@@ -71,7 +73,7 @@ async function run() {
           continue;
         }
 
-        if (check_branch_existence && run.branch in branches === true) {
+        if (check_branch_existence && run.branch in branchNames === true) {
           core.debug(`  Skipping '${workflow.name}' workflow run ${run.id} because branch is still active.`);
           continue;
         }
