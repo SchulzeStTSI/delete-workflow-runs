@@ -67,7 +67,7 @@ async function run() {
           per_page: 200
         });
 
-      console.log(runs)
+      console.log(run.pull_requests.length)
 
       for (const run of runs) {
         core.debug(`Run: '${workflow.name}' workflow run ${run.id} (status=${run.status})`)
@@ -77,7 +77,7 @@ async function run() {
           continue;
         }
 
-        if (check_branch_existence && branchNames.indexOf(run.head_branch) === 1 ) {
+        if (check_branch_existence && branchNames.indexOf(run.head_branch) === 1 && run.head_branch != "main" ) {
           console.log(` Skipping '${workflow.name}' workflow run ${run.id} because branch is still active.`);
           continue;
         }
