@@ -73,9 +73,9 @@ async function run() {
           continue;
         }
 
-        console.log(check_branch_existence)
         console.log("run branch "+run.head_branch)
         console.log(run.head_branch in branchNames)
+        console.log(branchNames)
         if (check_branch_existence && run.head_branch in branchNames === true) {
           core.log(`  Skipping '${workflow.name}' workflow run ${run.id} because branch is still active.`);
           continue;
