@@ -73,6 +73,8 @@ async function run() {
           continue;
         }
 
+        console.log(run.pull_requests)
+
         if (check_branch_existence && branchNames.indexOf(run.head_branch) === 1 ) {
           console.log(` Skipping '${workflow.name}' workflow run ${run.id} because branch is still active.`);
           continue;
