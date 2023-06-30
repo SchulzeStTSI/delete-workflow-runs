@@ -67,11 +67,9 @@ async function run() {
           per_page: 200
         });
 
-      console.log(run.pull_requests.length)
-
       for (const run of runs) {
         core.debug(`Run: '${workflow.name}' workflow run ${run.id} (status=${run.status})`)
-
+        console.log(run.pull_requests.length)
         if (run.status !== "completed") {
           console.log(`👻 Skipped '${workflow.name}' workflow run ${run.id}: it is in '${run.status}' state`);
           continue;
