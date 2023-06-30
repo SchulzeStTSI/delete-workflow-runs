@@ -28,8 +28,6 @@ async function run() {
         per_page: 200
       });
 
-    console.log(workflows)
-
     if (delete_workflow_pattern && delete_workflow_pattern.toLowerCase() !== "all") {
       console.log(`💬 workflows containing '${delete_workflow_pattern}' will be targeted`);
       workflows = workflows.filter(
@@ -65,8 +63,11 @@ async function run() {
         .paginate("GET /repos/:owner/:repo/actions/workflows/:workflow_id/runs", {
           owner: repo_owner,
           repo: repo_name,
-          workflow_id: workflow.id
+          workflow_id: workflow.id,
+          per_page: 200
         });
+
+      console.log(runs)
 
       for (const run of runs) {
         core.debug(`Run: '${workflow.name}' workflow run ${run.id} (status=${run.status})`)
