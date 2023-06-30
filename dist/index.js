@@ -28,6 +28,8 @@ async function run() {
         per_page: 200
       });
 
+    console.log(workflows)
+
     if (delete_workflow_pattern && delete_workflow_pattern.toLowerCase() !== "all") {
       console.log(`💬 workflows containing '${delete_workflow_pattern}' will be targeted`);
       workflows = workflows.filter(
