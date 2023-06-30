@@ -11,6 +11,7 @@ async function run() {
     const delete_workflow_by_state_pattern = core.getInput('delete_workflow_by_state_pattern');
     const delete_run_by_conclusion_pattern = core.getInput('delete_run_by_conclusion_pattern');
     const dry_run = core.getInput('dry_run');
+    const check_branch_existence = core.getInput("check_branch_existence")
     // Split the input 'repository' (format {owner}/{repo}) to be {owner} and {repo}
     const splitRepository = repository.split('/');
     if (splitRepository.length !== 2 || !splitRepository[0] || !splitRepository[1]) {
@@ -42,6 +43,14 @@ async function run() {
         ({ state }) => state.indexOf(delete_workflow_by_state_pattern) !== -1
       );
     }
+
+    let branches = await octokit
+      .paginate("GET /repos/:owner/:repo/branches", {
+        owner: repo_owner,
+        repo: repo_name,
+      });
+
+    console.log(branches)
 
     console.log(`💬 found total of ${workflows.length} workflow(s)`);
     for (const workflow of workflows) {
