@@ -48,9 +48,7 @@ async function run() {
       .paginate("GET /repos/:owner/:repo/branches", {
         owner: repo_owner,
         repo: repo_name,
-      });
-
-    console.log(branches)
+      }).map(a => a.name);;
 
     console.log(`💬 found total of ${workflows.length} workflow(s)`);
     for (const workflow of workflows) {
@@ -64,12 +62,20 @@ async function run() {
           repo: repo_name,
           workflow_id: workflow.id
         });
+
       for (const run of runs) {
         core.debug(`Run: '${workflow.name}' workflow run ${run.id} (status=${run.status})`)
+
         if (run.status !== "completed") {
           console.log(`👻 Skipped '${workflow.name}' workflow run ${run.id}: it is in '${run.status}' state`);
           continue;
         }
+
+        if (check_branch_existence && run.branch in branches === true) {
+          core.debug(`  Skipping '${workflow.name}' workflow run ${run.id} because branch is still active.`);
+          continue;
+        }
+
         if (delete_run_by_conclusion_pattern && delete_run_by_conclusion_pattern.toLowerCase() !== "all"
             && run.conclusion.indexOf(delete_run_by_conclusion_pattern) === -1  ) {
           core.debug(`  Skipping '${workflow.name}' workflow run ${run.id} because conclusion was ${run.conclusion}`);
