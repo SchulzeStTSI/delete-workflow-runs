@@ -82,8 +82,9 @@ async function run() {
         if (check_branch_existence && branchNames.indexOf(run.head_branch) === 1 ) {
           console.log(` Skipping '${workflow.name}' workflow run ${run.id} because branch is still active.`);
           continue;
-        }
-
+        } 
+        console.log(branchNames)
+        console.log(run.head_branch)
         if (delete_run_by_conclusion_pattern && delete_run_by_conclusion_pattern.toLowerCase() !== "all"
             && run.conclusion.indexOf(delete_run_by_conclusion_pattern) === -1  ) {
           core.debug(`  Skipping '${workflow.name}' workflow run ${run.id} because conclusion was ${run.conclusion}`);
